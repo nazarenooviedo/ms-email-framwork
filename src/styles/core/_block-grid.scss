@@ -1,12 +1,15 @@
-// Ink by ZURB
-// zurb.com/ink/
-// Licensed under MIT Open Source
+/* ======================================== */
+/*   BLOCK GRID
+/* ======================================== */
 
 @import "global";
 
-//
-// @variables
-//
+
+
+// -------------------------------------
+//   Variables
+// -------------------------------------
+
 $include-html-grid-classes: $include-html-classes !default;
 $include-html-block-grid-classes: $include-html-grid-classes !default;
 
@@ -19,12 +22,11 @@ $align-block-grid-to-grid: false !default;
   $block-grid-default-spacing: $column-gutter;
 }
 
-//
-// Block Grid Mixins
-//
 
-// Generate markup for block grid.
-//
+// -------------------------------------
+//   Mixins
+// -------------------------------------
+
 @mixin block-grid-html-classes() {
   @for $i from 2 through $block-grid-elements {
     .#{number2word($i)}-up td {

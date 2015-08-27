@@ -1,13 +1,20 @@
-// Ink by ZURB
-// zurb.com/ink/
-// Licensed under MIT Open Source
+/* ======================================== */
+/*   ALIGNMENT
+/* ======================================== */
 
 @import "global";
 
-//
-// @variables
-//
+
+
+// -------------------------------------
+//   Variables
+// -------------------------------------
+
 $include-html-alignment-classes: $include-html-classes !default;
+
+// -------------------------------------
+//   Base
+// -------------------------------------
 
 @include exports("alignment") {
 	@if $include-html-alignment-classes {

@@ -1,8 +1,14 @@
-// Foundation by ZURB
-// foundation.zurb.com
-// Licensed under MIT Open Source
+/* ======================================== */
+/*   GLOBAL
+/* ======================================== */
 
 @import "../helpers/functions";
+
+
+
+// -------------------------------------
+//   Variables
+// -------------------------------------
 
 // We use this to control whether or not CSS classes come through in the gem files. // Change
 $include-html-classes: true !default;
