@@ -48,56 +48,91 @@ $header-anchor-font-color-active: $header-anchor-font-color !default;
     @if $include-html-type-classes {
     /* Typography */
 
-    body, table.body, h1, h2, h3, h4, h5, h6, p, td {
-      color: color2hex($base-font-color);
-      font-family: $base-font-family;
-      font-weight: $base-font-weight;
-      padding:0;
-      margin: 0;
-      text-align: left;
-      line-height: $base-line-height;
+    body,
+    table.body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    td {
+        font-family: $base-font-family;
+        font-weight: $base-font-weight;
+        line-height: $base-line-height;
+
+        margin: 0;
+        padding: 0;
+
+        text-align: left;
+
+        color: color2hex($base-font-color);
     }
 
-    h1, h2, h3, h4, h5, h6 {
-      word-break: normal;
+    h1 {
+        font-size: $h1-font-size;
     }
 
-  h1 {font-size: $h1-font-size;}
-  h2 {font-size: $h2-font-size;}
-  h3 {font-size: $h3-font-size;}
-  h4 {font-size: $h4-font-size;}
-  h5 {font-size: $h5-font-size;}
-  h6 {font-size: $h6-font-size;}
-  body, table.body, p, td {font-size: $body-font-size;line-height:$body-line-height;}
+    h2 {
+        font-size: $h2-font-size;
+    }
 
-    p.lead, p.lede, p.leed {
-      font-size: $paragraph-lead-font-size;
-      line-height:$paragraph-lead-line-height;
+    h3 {
+        font-size: $h3-font-size;
+    }
+
+    h4 {
+        font-size: $h4-font-size;
+    }
+
+    h5 {
+        font-size: $h5-font-size;
+    }
+
+    h6 {
+        font-size: $h6-font-size;
+    }
+    
+    body,
+    table.body,
+    p,
+    td {
+        font-size: $body-font-size;
+        line-height: $body-line-height;
+    }
+
+    p.lead,
+    p.lede,
+    p.leed {
+        font-size: $paragraph-lead-font-size;
+        line-height: $paragraph-lead-line-height;
     }
 
     p {
-      margin-bottom: $paragraph-margin-bottom;
+        margin-bottom: $paragraph-margin-bottom;
     }
 
     small {
-      font-size: $small-font-size;
+        font-size: $small-font-size;
     }
 
     a {
-      color: color2hex($anchor-font-color);
-      text-decoration: $anchor-text-decoration;
+        text-decoration: $anchor-text-decoration;
+
+        color: color2hex($anchor-font-color);
     }
 
     a:hover {
-      color: color2hex($anchor-font-color-hover) !important;
+        color: color2hex($anchor-font-color-hover) !important;
     }
 
     a:active {
-      color: color2hex($anchor-font-color-active) !important;
+        color: color2hex($anchor-font-color-active) !important;
     }
 
     a:visited {
-      color: color2hex($anchor-font-color-visited) !important;
+        color: color2hex($anchor-font-color-visited) !important;
     }
 
     h1 a,
@@ -106,7 +141,7 @@ $header-anchor-font-color-active: $header-anchor-font-color !default;
     h4 a,
     h5 a,
     h6 a {
-      color: color2hex($header-anchor-font-color);
+        color: color2hex($header-anchor-font-color);
     }
 
     h1 a:active,
@@ -115,7 +150,7 @@ $header-anchor-font-color-active: $header-anchor-font-color !default;
     h4 a:active,
     h5 a:active,
     h6 a:active {
-      color: color2hex($header-anchor-font-color-active) !important;
+        color: color2hex($header-anchor-font-color-active) !important;
     }
 
     h1 a:visited,
@@ -124,7 +159,8 @@ $header-anchor-font-color-active: $header-anchor-font-color !default;
     h4 a:visited,
     h5 a:visited,
     h6 a:visited {
-      color: color2hex($header-anchor-font-color-visited) !important;
+        color: color2hex($header-anchor-font-color-visited) !important;
     }
+
   }
 }

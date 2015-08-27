@@ -1,12 +1,14 @@
-// Ink by ZURB
-// zurb.com/ink/
-// Licensed under MIT Open Source
+/* ======================================== */
+/*   NORMALIZE
+/* ======================================== */
 
 @import "global";
 
-//
-// @variables
-//
+
+
+// -------------------------------------
+//   Variables
+// -------------------------------------
 $include-html-normalize-classes: $include-html-classes !default;
 
 
@@ -43,7 +45,7 @@ $include-html-normalize-classes: $include-html-classes !default;
         }
 
         p {
-            margin: 0 0 0 $paragraph-margin-bottom;
+            margin: 0;
         }
 
         a img {
