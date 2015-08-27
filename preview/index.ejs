@@ -2,16 +2,15 @@
 <html lang="en" class="preview-interface-view">
 <head>
   <meta charset="UTF-8">
-  <title>MS Maquetacion :: (Preview)</title>
+  <title>MS Email Framework</title>
   <link rel="stylesheet" href="/css/preview.css">
 </head>
 <body>
   <div id="header" class="header">
-    <div class="header--brand"><a href="https://github.com/leemunroe/grunt-email-workflow" target="_blank">MS Maquetacion</a></div>
+    <div class="header--brand"><a href="https://github.com/leemunroe/grunt-email-workflow" target="_blank">MS Email Framework</a></div>
     <div class="header--select">
-      Preview:&nbsp;
+      Select a Email:&nbsp;
       <select id="template-select">
-        <option value="_blank.html">Select a Email</option>
         <% templates.forEach(function(template) { %>
           <option value="<%= template.filename %>" data-subject="<%= template.subject %>"><%= template.filename %></option>
         <% }); %>

@@ -17,10 +17,6 @@ module.exports = function(grunt) {
       preview:    'preview'
     },
 
-
-
-
-
     // Takes your SCSS files and compiles them to CSS
     sass: {
       dist: {
@@ -28,7 +24,7 @@ module.exports = function(grunt) {
           style: 'expanded'
         },
         files: {
-          '<%= paths.src %>/css/main.css': '<%= paths.src %>/css/ink.scss'
+          '<%= paths.src %>/styles/main.css': '<%= paths.src %>/styles/style.scss'
         }
       },
 
@@ -43,10 +39,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
-
-
-
 
     // Assembles your email content with HTML layout
     assemble: {
@@ -140,7 +132,7 @@ module.exports = function(grunt) {
     // Watches for changes to CSS or email templates then runs grunt tasks
     watch: {
       emails: {
-        files: ['<%= paths.src %>/css/ink/**','<%= paths.src %>/emails/*','<%= paths.src %>/layouts/*','<%= paths.src %>/partials/*','<%= paths.src %>/data/*','<%= paths.src %>/helpers/*'],
+        files: ['<%= paths.src %>/styles/**','<%= paths.src %>/emails/*','<%= paths.src %>/layouts/*','<%= paths.src %>/partials/*','<%= paths.src %>/data/*','<%= paths.src %>/helpers/*'],
         tasks: ['default']
       },
       preview_dist: {
@@ -159,10 +151,6 @@ module.exports = function(grunt) {
       }
     },
 
-
-
-
-
     // Use Mailgun option if you want to email the design to your inbox or to something like Litmus
     // grunt send --template=transaction.html
     mailgun: {
@@ -176,82 +164,6 @@ module.exports = function(grunt) {
         src: ['<%= paths.dist %>/'+grunt.option('template')]
       }
     },
-
-
-
-
-
-    // Use Rackspace Cloud Files if you're using images in your email
-    // grunt cdnify
-    cloudfiles: {
-      prod: {
-        'user': '<%= secrets.cloudfiles.user %>', // See README for secrets.json or replace this with your user
-        'key': '<%= secrets.cloudfiles.key %>', // See README for secrets.json or replace this with your own key
-        'region': '<%= secrets.cloudfiles.region %>', // See README for secrets.json or replace this with your region
-        'upload': [{
-          'container': '<%= secrets.cloudfiles.container %>', // See README for secrets.json or replace this with your container name
-          'src': '<%= paths.dist_img %>/*',
-          'dest': '/',
-          'stripcomponents': 0
-        }]
-      }
-    },
-
-    // CDN will replace local paths with your CDN path
-    cdn: {
-      cloudfiles: {
-        options: {
-          cdn: '<%= secrets.cloudfiles.uri %>', // See README for secrets.json or replace this with your cdn uri
-          flatten: true,
-          supportedTypes: 'html'
-        },
-        cwd: './<%= paths.dist %>',
-        dest: './<%= paths.dist %>',
-        src: ['*.html']
-      },
-      aws_s3: {
-        options: {
-          cdn: '<%= secrets.s3.bucketuri %>/<%= secrets.s3.bucketname %>/<%= secrets.s3.bucketdir %>', // See README for secrets.json or replace this with your Amazon S3 bucket uri
-          flatten: true,
-          supportedTypes: 'html'
-        },
-        cwd: './<%= paths.dist %>',
-        dest: './<%= paths.dist %>',
-        src: ['*.html']
-      }
-    },
-
-
-
-
-
-    // Use Amazon S3 for images
-    // grunt s3upload
-    aws_s3: {
-      options: {
-        accessKeyId: '<%= secrets.s3.key %>', // See README for secrets.json
-        secretAccessKey: '<%= secrets.s3.secret %>', // See README for secrets.json
-        region: '<%= secrets.s3.region %>', // Enter region or leave blank for US Standard region
-        uploadConcurrency: 5, // 5 simultaneous uploads
-        downloadConcurrency: 5 // 5 simultaneous downloads
-      },
-      prod: {
-        options: {
-          bucket: '<%= secrets.s3.bucketname %>', // Define your S3 bucket name in secrets.json
-          differential: true, // Only uploads the files that have changed
-          params: {
-            CacheControl: '2000'
-          }
-        },
-        files: [
-          {expand: true, cwd: '<%= paths.dist_img %>', src: ['**'], dest: '<%= secrets.s3.bucketdir %>/<%= paths.dist_img %>'}
-        ]
-      }
-    },
-
-
-
-
 
     // Send your email template to Litmus for testing
     // grunt litmus --template=transaction.html
@@ -269,10 +181,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
-
-
-
 
     /**************************************************************************************************************
       START: Browser-based preview tasks.
