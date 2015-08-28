@@ -1,13 +1,13 @@
 .preview-interface-view {
-  
+
   // Basic elements
   body {
     background: #fff;
-    color: #333;
-    font: normal 14px/1.4 Helvetica, Arial, Sans-serif;
+    color: #212121;
+    font: normal 14px/1.4 'Roboto', Arial, Sans-serif;
   }
   a {
-    color: #000;
+    color: #212121;
     text-decoration: none;
 
     &:hover {
@@ -21,7 +21,8 @@
 
   // Header
   .header {
-    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    background-color: #0288D1;
     display: table;
     width: 100%;
     position: relative;
@@ -29,24 +30,26 @@
 
     > div {
       display: table-cell;
-      padding: 8px 20px;
+      padding: 18px 20px;
       vertical-align: middle;
     }
   }
-  .header--brand {
+  .header--brand a {
     font-size: 22px;
+    color: #fff;
   }
   .header--select {
     text-align: right;
+    color: #fff;
   }
 
   // Preview Screens
   .preview-ui--full,
   .preview-ui--mobile,
   .preview-ui--mobile__container {
-    transition: margin all $drawer-animation-duration linear, 
-                padding all $drawer-animation-duration linear, 
-                width all $drawer-animation-duration linear, 
+    transition: margin all $drawer-animation-duration linear,
+                padding all $drawer-animation-duration linear,
+                width all $drawer-animation-duration linear,
                 opaciy all $drawer-animation-duration linear;
   }
 
@@ -61,7 +64,7 @@
     width: 100%;
   }
   .preview-ui--mobile {
-    background: #333;
+    background: #FFFFFF;
     float: right;
     width: 500px;
     margin-left: -500px;
@@ -95,7 +98,7 @@
     height: 40px;
     z-index: 10;
   }
-  
+
   // Layout elemnts when mobile drawer is hidden
   .mobile-drawer-hidden {
     .preview-ui--full {
@@ -128,7 +131,7 @@
       }
     }
   }
-  
+
   // Drawer close toggle (x)
   .toggle-drawer-close {
     z-index: 1;
@@ -141,7 +144,7 @@
     &:after {
       content: "";
       position: absolute;
-      background: #fff;
+      background: #FF5252;
       display: block;
       width: 4px;
       height: 40px;

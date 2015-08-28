@@ -133,7 +133,10 @@ module.exports = function(grunt) {
     watch: {
       emails: {
         files: ['<%= paths.src %>/styles/**','<%= paths.src %>/emails/*','<%= paths.src %>/layouts/*','<%= paths.src %>/partials/*','<%= paths.src %>/data/*','<%= paths.src %>/helpers/*'],
-        tasks: ['default']
+        tasks: ['default'],
+        options: {
+          livereload: true
+        }
       },
       preview_dist: {
         files: ['./dist/*'],
