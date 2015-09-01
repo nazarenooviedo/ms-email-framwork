@@ -14,6 +14,7 @@ module.exports = function(grunt) {
       src_img:    'src/img',
       dist:       'dist',
       dist_img:   'dist/img',
+      dist_css:   'dist/css',
       preview:    'preview'
     },
 
@@ -24,7 +25,7 @@ module.exports = function(grunt) {
           style: 'expanded'
         },
         files: {
-          '<%= paths.src %>/styles/main.css': '<%= paths.src %>/styles/style.scss'
+          '<%= paths.dist_css %>/main.css': '<%= paths.src %>/styles/style.scss'
         }
       },
 
@@ -50,7 +51,7 @@ module.exports = function(grunt) {
         flatten: true
       },
       pages: {
-        src: ['<%= paths.src %>/emails/*.hbs'],
+        src: ['<%= paths.src %>/emails/' + grunt.option('template') + '.hbs'],
         dest: '<%= paths.dist %>/'
       }
     },
@@ -126,33 +127,43 @@ module.exports = function(grunt) {
     },
 
 
+    concurrent: {
+      watch: {
+        tasks: [
+          'watch',
+          'shell:sass',
+          'open'
+        ],
+        options: {
+          logConcurrentOutput: true,
+          limit: 4
+        }
+      }
+    },
 
 
 
     // Watches for changes to CSS or email templates then runs grunt tasks
     watch: {
+      options: {
+        livereload: true
+      },
       emails: {
-        files: ['<%= paths.src %>/styles/**','<%= paths.src %>/emails/*','<%= paths.src %>/layouts/*','<%= paths.src %>/partials/*','<%= paths.src %>/data/*','<%= paths.src %>/helpers/*'],
-        tasks: ['default'],
-        options: {
-          livereload: true
-        }
+        files: ['<%= paths.src %>/emails/' + grunt.option('template') + '.hbs','<%= paths.src %>/layouts/*', '<%= paths.src %>/data/*'],
+        tasks: ['assemble']
       },
-      preview_dist: {
-        files: ['./dist/*'],
-        tasks: [],
-        options: {
-          livereload: true
-        }
-      },
-      preview: {
-        files: ['<%= paths.preview %>/scss/*'],
-        tasks: ['sass:preview','autoprefixer:preview'],
-        options: {
-          livereload: true
-        }
+      css: {
+        files: ['<%= paths.dist_css %>/main.css']
       }
     },
+
+
+    shell: {
+      sass: {
+        command: 'sass --watch --compass --sourcemap ' + '<%= paths.src %>/styles/style.scss:<%= paths.dist_css %>/main.css'
+      }
+    },
+
 
     // Use Mailgun option if you want to email the design to your inbox or to something like Litmus
     // grunt send --template=transaction.html
@@ -229,6 +240,7 @@ module.exports = function(grunt) {
 
   // Load assemble
   grunt.loadNpmTasks('assemble');
+  grunt.loadNpmTasks('grunt-concurrent');
 
   // Load all Grunt tasks
   // https://github.com/sindresorhus/load-grunt-tasks
@@ -240,14 +252,11 @@ module.exports = function(grunt) {
   // Use grunt send if you want to actually send the email to your inbox
   grunt.registerTask('send', ['mailgun']);
 
-  // Upload images to our CDN on Rackspace Cloud Files
-  grunt.registerTask('cdnify', ['default','cloudfiles','cdn:cloudfiles']);
-
-  // Upload image files to Amazon S3
-  grunt.registerTask('s3upload', ['aws_s3:prod', 'cdn:aws_s3']);
 
   // Launch the express server and start watching
   // NOTE: The server will not stay running if the grunt watch task is not active
   grunt.registerTask('serve', ['default', 'sass:preview', 'autoprefixer:preview', 'express', 'open', 'watch']);
+
+  grunt.registerTask('test', ['express', 'concurrent']);
 
 };

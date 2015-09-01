@@ -16,6 +16,7 @@ $button-sml: 8px 0 !default;
 $button-med: 12px 0 !default;
 $button-lrg: 21px 0 !default;
 
+
 // We use these to control button text styles.
 $button-font-family: $base-font-family !default;
 $button-font-color: #ffffff !default;
@@ -155,7 +156,7 @@ $button-round: $global-rounded !default;
     table.large-button:hover td a,
     table.large-button:active td a,
     table.large-button td a:visited {
-      color: color2hex($button-font-color) !important; 
+      color: color2hex($button-font-color) !important;
     }
 
     table.secondary td {

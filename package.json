@@ -17,6 +17,7 @@
     "grunt-aws-s3": "^0.13.1",
     "grunt-cdn": "^0.6.5",
     "grunt-cloudfiles": "^0.3.0",
+    "grunt-concurrent": "^1.0.0",
     "grunt-contrib-imagemin": "^0.9.4",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express": "^1.4.1",
@@ -26,6 +27,7 @@
     "grunt-open": "^0.2.3",
     "grunt-replace": "^0.9.3",
     "grunt-sass": "^1.0.0",
+    "grunt-shell": "^1.1.2",
     "imagemin-mozjpeg": "^5.1.0",
     "load-grunt-tasks": "^3.2.0"
   }
