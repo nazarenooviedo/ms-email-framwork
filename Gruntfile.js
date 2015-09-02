@@ -4,11 +4,10 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    // secrets.json is ignored in git because it contains sensitive data
-    // See the README for configuration settings
+    // Settings for Accounts (Litmus, Mailgun)
     secrets: grunt.file.readJSON('secrets.json'),
 
-    // Re-usable filesystem paths (these shouldn't be modified)
+    // Folders for assets, development environment and production environment
     paths: {
       src:        'src',
       src_img:    'src/img',
@@ -18,30 +17,18 @@ module.exports = function(grunt) {
       preview:    'preview'
     },
 
+    /* ====================================================================================== */
+    /* Development tasks                                                                      */
+    /* ====================================================================================== */
+
     // Takes your SCSS files and compiles them to CSS
-    sass: {
-      dist: {
-        options: {
-          style: 'expanded'
-        },
-        files: {
-          '<%= paths.dist_css %>/main.css': '<%= paths.src %>/styles/style.scss'
-        }
-      },
-
-      // This task compiles Sass for the browser-baed preview UI.
-      // You should not need to edit it.
-      preview: {
-        options: {
-          style: 'compressed'
-        },
-        files: {
-          '<%= paths.preview %>/css/preview.css': '<%= paths.preview %>/scss/preview.scss'
-        }
+    shell: {
+      sass: {
+        command: 'sass --watch --compass --sourcemap ' + '<%= paths.src %>/styles/style.scss:<%= paths.dist_css %>/main.css'
       }
-    },
+    },    
 
-    // Assembles your email content with HTML layout
+    // Assembles the email content with HTML layout. This function receive a parameter with the template name (grunt.option('template'))
     assemble: {
       options: {
         layoutdir: '<%= paths.src %>/layouts',
@@ -56,38 +43,38 @@ module.exports = function(grunt) {
       }
     },
 
-
-
-
-
-    // Replace compiled template images sources from ../src/html to ../dist/html
-    replace: {
-      src_images: {
-        options: {
-          usePrefix: false,
-          patterns: [
-            {
-              match: /(<img[^>]+[\"'])(\.\.\/src\/img\/)/gi,  // Matches <img * src="../src/img or <img * src='../src/img'
-              replacement: '$1../<%= paths.dist_img %>/'
-            },
-            {
-              match: /(url\(*[^)])(\.\.\/src\/img\/)/gi,  // Matches url('../src/img') or url(../src/img) and even url("../src/img")
-              replacement: '$1../<%= paths.dist_img %>/'
-            }
-          ]
-        },
-        files: [{
-          expand: true,
-          flatten: true,
-          src: ['<%= paths.dist %>/*.html'],
-          dest: '<%= paths.dist %>'
-        }]
+    // Watches for changes to CSS or email templates then runs grunt tasks
+    watch: {
+      options: {
+        livereload: true
+      },
+      emails: {
+        files: ['<%= paths.src %>/emails/' + grunt.option('template') + '.hbs','<%= paths.src %>/layouts/*', '<%= paths.src %>/data/*'],
+        tasks: ['assemble']
+      },
+      css: {
+        files: ['<%= paths.dist_css %>/main.css']
       }
     },
 
+    // Concurrent task executes
+    concurrent: {
+      watch: {
+        tasks: [
+          'watch',
+          'shell:sass',
+          'open'
+        ],
+        options: {
+          logConcurrentOutput: true,
+          limit: 4
+        }
+      }
+    },
 
-
-
+    /* ====================================================================================== */
+    /* Production tasks                                                                       */
+    /* ====================================================================================== */
 
     // Inlines your CSS
     juice: {
@@ -106,15 +93,36 @@ module.exports = function(grunt) {
       },
     },
 
-
-
-
+    // Replace compiled template images sources from ../src/html to ../dist/html
+    replace: {
+      src_images: {
+        options: {
+          usePrefix: false,
+          patterns: [
+            {
+              match: /(<img[^>]+[\"'])(\.\.\/src\/img\/)/gi,  // Matches <img * src="../src/img or <img * src='../src/img'
+              replacement: '$1../<%= paths.src_img %>/'
+            },
+            {
+              match: /(url\(*[^)])(\.\.\/src\/img\/)/gi,  // Matches url('../src/img') or url(../src/img) and even url("../src/img")
+              replacement: '$1../<%= paths.dist_img %>/'
+            }
+          ]
+        },
+        files: [{
+          expand: true,
+          flatten: true,
+          src: ['<%= paths.dist %>/*.html'],
+          dest: '<%= paths.dist %>'
+        }]
+      }
+    },
 
     // Optimize images
     imagemin: {
       dynamic: {
         options: {
-          optimizationLevel: 3,
+          optimizationLevel: 4,
           svgoPlugins: [{ removeViewBox: false }]
         },
         files: [{
@@ -126,44 +134,9 @@ module.exports = function(grunt) {
       }
     },
 
-
-    concurrent: {
-      watch: {
-        tasks: [
-          'watch',
-          'shell:sass',
-          'open'
-        ],
-        options: {
-          logConcurrentOutput: true,
-          limit: 4
-        }
-      }
-    },
-
-
-
-    // Watches for changes to CSS or email templates then runs grunt tasks
-    watch: {
-      options: {
-        livereload: true
-      },
-      emails: {
-        files: ['<%= paths.src %>/emails/' + grunt.option('template') + '.hbs','<%= paths.src %>/layouts/*', '<%= paths.src %>/data/*'],
-        tasks: ['assemble']
-      },
-      css: {
-        files: ['<%= paths.dist_css %>/main.css']
-      }
-    },
-
-
-    shell: {
-      sass: {
-        command: 'sass --watch --compass --sourcemap ' + '<%= paths.src %>/styles/style.scss:<%= paths.dist_css %>/main.css'
-      }
-    },
-
+    /* ====================================================================================== */
+    /* Optionals   tasks                                                                      */
+    /* ====================================================================================== */
 
     // Use Mailgun option if you want to email the design to your inbox or to something like Litmus
     // grunt send --template=transaction.html
@@ -196,20 +169,9 @@ module.exports = function(grunt) {
       }
     },
 
-    /**************************************************************************************************************
-      START: Browser-based preview tasks.
-      You should not need to edit anything between this and the end block.
-    ***************************************************************************************************************/
-
-    // Autoprefixer for css
-    autoprefixer: {
-      preview: {
-        options: {
-          browsers: ['last 6 versions', 'ie 9']
-        },
-        src: 'preview/css/preview.css'
-      }
-    },
+    /* ====================================================================================== */
+    /* Server tasks                                                                           */
+    /* ====================================================================================== */
 
     // Express server for browser previews
     express: {
@@ -231,19 +193,13 @@ module.exports = function(grunt) {
       }
     }
 
-    /**************************************************************************************************************
-      END: Browser-based preview tasks.
-      You should not need to edit anything between this and the start block.
-    ***************************************************************************************************************/
-
   });
 
-  // Load assemble
-  grunt.loadNpmTasks('assemble');
-  grunt.loadNpmTasks('grunt-concurrent');
+  // // Load assemble
+  // grunt.loadNpmTasks('assemble');
+  // grunt.loadNpmTasks('grunt-concurrent');
 
   // Load all Grunt tasks
-  // https://github.com/sindresorhus/load-grunt-tasks
   require('load-grunt-tasks')(grunt);
 
   // Where we tell Grunt what to do when we type "grunt" into the terminal.
