@@ -25,6 +25,9 @@ module.exports = function(grunt) {
     shell: {
       sass: {
         command: 'sass --watch --compass --sourcemap ' + '<%= paths.src %>/styles/style.scss:<%= paths.dist_css %>/main.css'
+      },
+      sass_compile: {
+        command: 'sass --compass --sourcemap ' + '<%= paths.src %>/styles/style.scss:<%= paths.dist_css %>/main.css'
       }
     },    
 
@@ -39,7 +42,7 @@ module.exports = function(grunt) {
       },
       pages: {
         src: ['<%= paths.src %>/emails/' + grunt.option('template') + '.hbs'],
-        dest: '<%= paths.dist %>/'
+        dest: '<%= paths.dist %>/' + grunt.option('template') + '/'
       }
     },
 
@@ -87,7 +90,7 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          src: ['<%= paths.dist %>/*.html'],
+          src: ['<%= paths.dist %>/' + grunt.option('template') + '/*.html'],
           dest: ''
         }]
       },
@@ -101,19 +104,19 @@ module.exports = function(grunt) {
           patterns: [
             {
               match: /(<img[^>]+[\"'])(\.\.\/src\/img\/)/gi,  // Matches <img * src="../src/img or <img * src='../src/img'
-              replacement: '$1../<%= paths.src_img %>/'
+              replacement: '$1../<%= paths.src_img %>/' + grunt.option('template') + '/'
             },
             {
               match: /(url\(*[^)])(\.\.\/src\/img\/)/gi,  // Matches url('../src/img') or url(../src/img) and even url("../src/img")
-              replacement: '$1../<%= paths.dist_img %>/'
+              replacement: '$1../<%= paths.dist_img %>/' + grunt.option('template') + '/'
             }
           ]
         },
         files: [{
           expand: true,
           flatten: true,
-          src: ['<%= paths.dist %>/*.html'],
-          dest: '<%= paths.dist %>'
+          src: ['<%= paths.dist %>/' + grunt.option('template') + '.html'],
+          dest: '<%= paths.dist %>/' + grunt.option('template') + '/'
         }]
       }
     },
@@ -127,9 +130,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: '<%= paths.src_img %>',
+          cwd: '<%= paths.src_img %>/' + grunt.option('template') + '/',
           src: ['**/*.{png,jpg,gif}'],
-          dest: '<%= paths.dist_img %>'
+          dest: '<%= paths.dist %>/' + grunt.option('template') + '/'
         }]
       }
     },
@@ -195,24 +198,25 @@ module.exports = function(grunt) {
 
   });
 
-  // // Load assemble
-  // grunt.loadNpmTasks('assemble');
-  // grunt.loadNpmTasks('grunt-concurrent');
-
   // Load all Grunt tasks
   require('load-grunt-tasks')(grunt);
 
-  // Where we tell Grunt what to do when we type "grunt" into the terminal.
-  grunt.registerTask('default', ['sass:dist','assemble','juice','imagemin','replace:src_images']);
+  // grunt dev --template=newsletter
+  grunt.registerTask('dev', [
+    'express', 
+    'concurrent'
+  ]);
+
+  //Generate a final email
+  grunt.registerTask('build', [
+    'shell:sass_compile',
+    'assemble',
+    'juice',
+    'imagemin',
+    'replace:src_images'
+  ]);
 
   // Use grunt send if you want to actually send the email to your inbox
-  grunt.registerTask('send', ['mailgun']);
-
-
-  // Launch the express server and start watching
-  // NOTE: The server will not stay running if the grunt watch task is not active
-  grunt.registerTask('serve', ['default', 'sass:preview', 'autoprefixer:preview', 'express', 'open', 'watch']);
-
-  grunt.registerTask('test', ['express', 'concurrent']);
+  grunt.registerTask('send', ['mailgun']);  
 
 };
