@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "items": [
+    {"elem" : "e"},
+    {"elem" : "e"},
+    {"elem" : "e"},
+    {"elem" : "e"}
+  ]
+}
