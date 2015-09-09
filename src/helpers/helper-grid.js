@@ -1,77 +1,111 @@
 
-module.exports.container = function(data){
+module.exports.container = function(context, data){
+
   return '\
-  <div class="webkit" style="max-width:600px;" >\
-  			<!--[if (gte mso 9)|(IE)]>\
-  			<table width="600" align="center" style="border-spacing:0;font-family:sans-serif;color:#333333;" >\
-  					<tr>\
-  							<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >\
-      						<![endif]-->\
-      						<table class="outer" align="center" style="border-spacing:0;font-family:sans-serif;color:#333333;Margin:0 auto;width:100%;max-width:600px;" >\
-                    '+ data.fn(this) + '\
-                  </table>\
-                  <!--[if (gte mso 9)|(IE)]>\
-                </td>\
-            </tr>\
-        </table>\
-        <![endif]-->\
+  <div class="webkit" >\
+  <!--[if (gte mso 9)|(IE)]>\
+  <table width="'+context.width+'" align="center" >\
+  <tr>\
+  <td>\
+  <![endif]-->\
+  <table class="outer" align="center" >\
+  '+ data.fn(this) + '\
+  </table>\
+  <!--[if (gte mso 9)|(IE)]>\
+  </td>\
+  </tr>\
+  </table>\
+  <![endif]-->\
   </div>'
 }
 
 
-module.exports.row = function(data){
+module.exports.row = function(context , data){
   return '\
   <tr>\
-    <td class="'+data.hash.columns+'-column" style="'+data.hash.styles+'" >\
-      <!--[if (gte mso 9)|(IE)]>\
-      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#333333;" >\
-        <tr>\
-      <![endif]-->\
-          ' + data.fn(this) +'\
-      <!--[if (gte mso 9)|(IE)]>\
-          </tr>\
-      </table>\
-      <![endif]-->\
-    </td>\
+  <td class="full-row" >\
+  <!--[if (gte mso 9)|(IE)]>\
+  <table width="100%"  >\
+  <tr>\
+  <![endif]-->\
+  ' + data.fn(this) +'\
+  <!--[if (gte mso 9)|(IE)]>\
+  </tr>\
+  </table>\
+  <![endif]-->\
+  </td>\
   </tr>';
 
 }
 
-module.exports.col = function(options){
+module.exports.col = function(context, options){
 
-  console.log('##################################');
-  console.log(options);
+  var percent = context.width / options.hash.size;
   return '\
-    <!--[if (gte mso 9)|(IE)]>\
-    <td width="30%" valign="top" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >\
-    <![endif]-->\
-    <div class="column" style="width:100%;max-width:200px;display:inline-block;vertical-align:top;" >\
-      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#333333;" >\
-        <tr>\
-          <td class="inner" style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;" >\
-          '+ options.fn(this) +'\
-          </td>\
-        </tr>\
-      </table>\
-    </div>\
-    <!--[if (gte mso 9)|(IE)]>\
-    </td>\
-    <![endif]-->';
+  <!--[if (gte mso 9)|(IE)]>\
+  <td width="'+percent+'%" valign="top" >\
+  <![endif]-->\
+  <div class="'+numberToWord(options.hash.size)+'-column column" >\
+  <table width="100%">\
+  <tr>\
+  <td class="inner" >\
+  <table class="contents">\
+    <tr>\
+      <td >\
+  '+ options.fn(this) +'\
+      </td>\
+    </tr>\
+  </table>\
+  </td>\
+  </tr>\
+  </table>\
+  </div>\
+  <!--[if (gte mso 9)|(IE)]>\
+  </td>\
+  <![endif]-->';
 }
 
 function numberToWord(number){
+
   switch(number){
-    case 1:
-      return 'one';
-      break;
-    case 2:
-      return 'two';
-      break;
-    case 3:
-      return 'three';
-      break;
+    case '1':
+    return 'one';
+    break;
+    case '2':
+    return 'two';
+    break;
+    case '3':
+    return 'three';
+    break;
+    case '4':
+    return 'four';
+    break;
+    case '5':
+    return 'five';
+    break;
+    case '6':
+    return 'six';
+    break;
+    case '7':
+    return 'seven';
+    break;
+    case '8':
+    return 'eight';
+    break;
+    case '9':
+    return 'nine';
+    break;
+    case '10':
+    return 'ten';
+    break;
+    case '11':
+    return 'eleven';
+    break;
+    case '12':
+    return 'twelve';
+    break;
     default:
-      return '';
+    return '';
 
   }
 }
