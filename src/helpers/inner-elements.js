@@ -14,3 +14,15 @@ module.exports.hb = function(context, data){
       </td>\
     </tr>';
 }
+
+module.exports.img = function(data){
+  var img_src = data.hash.src;
+  var img_full_width = data.hash.full_width ? "full_width" ? "";
+  var img_width = data.hash.width;
+  return '\
+    <tr>\
+      <td>\
+        <img src="'+img_src+'" class="'+img_full_width+'" />\
+      </td>\
+    <tr>';
+}
